@@ -58,7 +58,7 @@ public class ThunderstoreProject : BaseToml<ThunderstoreProject>
         public bool ContainsNsfwContent { get; set; } = false;
         [TomlProperty("dependencies")]
         [TomlDoNotInlineObject]
-        public Dictionary<string, string> Dependencies { get; set; } = new() { { "AuthorName-PackageName", "0.0.1" } };
+        public Dictionary<string, string>? Dependencies { get; set; }
     }
     [TomlProperty("package")]
     public PackageData? Package { get; set; }
@@ -77,7 +77,9 @@ public class ThunderstoreProject : BaseToml<ThunderstoreProject>
         public class CopyPath
         {
             [TomlProperty("source")]
-            public string Source { get; set; } = "./dist";
+            public string? Source { get; set; }
+            [TomlProperty("pattern")]
+            public string? Pattern { get; set; }
             [TomlProperty("target")]
             public string Target { get; set; } = "";
         }

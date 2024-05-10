@@ -20,11 +20,7 @@ class DefaultConfig : EmptyConfig
             VersionNumber = "0.0.1",
             Description = "Example mod description",
             WebsiteUrl = "",
-            ContainsNsfwContent = false,
-            Dependencies = new()
-            {
-                { "Example-Dependency", "1.0.0" }
-            }
+            ContainsNsfwContent = false
         };
     }
 
@@ -45,7 +41,7 @@ class DefaultConfig : EmptyConfig
             OutDir = "./build",
             CopyPaths = new()
             {
-                { new("./dist", "") }
+                { new("./dist", "", false) }
             }
         };
     }

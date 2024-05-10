@@ -1,5 +1,6 @@
 using System.IO.Compression;
 using System.Text;
+using GlobExpressions;
 using ThunderstoreCLI.Configuration;
 using ThunderstoreCLI.Models;
 using ThunderstoreCLI.Utils;
@@ -158,10 +159,26 @@ public static class BuildCommand
 
         if (config.BuildConfig.CopyPaths is not null)
         {
-            foreach (var pathMap in config.BuildConfig.CopyPaths)
+            foreach (var copyPath in config.BuildConfig.CopyPaths)
             {
-                Write.WithNL($"Mapping {Dim(pathMap.From)} to {Dim($"/{pathMap.To}")}", before: true);
-                encounteredIssues |= !AddPathToArchivePlan(plan, pathMap.From, pathMap.To);
+                if (copyPath.IsPattern)
+                {
+                    var files = Glob.Files(config.GetProjectBasePath()!, copyPath.From);
+                    foreach (var file in files)
+                    {
+                        Map(file, Path.Combine(copyPath.To, Path.GetFileName(file)));
+                    }
+                }
+                else
+                {
+                    Map(copyPath.From, copyPath.To);
+                }
+            }
+
+            void Map(string from, string to)
+            {
+                Write.WithNL($"Mapping {Dim(from)} to {Dim($"/{to}")}", before: true);
+                encounteredIssues |= !AddPathToArchivePlan(plan!, from, to);
             }
         }
 

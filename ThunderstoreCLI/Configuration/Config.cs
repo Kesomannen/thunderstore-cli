@@ -195,11 +195,13 @@ public struct CopyPathMap
 {
     public readonly string From;
     public readonly string To;
+    public readonly bool IsPattern;
 
-    public CopyPathMap(string from, string to)
+    public CopyPathMap(string from, string to, bool isPattern)
     {
         From = from;
         To = to;
+        IsPattern = isPattern;
     }
 }
 
